@@ -8,6 +8,10 @@ APuzzlePlatformsGameMode::APuzzlePlatformsGameMode()
 {
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
+
+	//auto Test = PlayerPawnBPClass; // We get here ConstructorHelpers::FClassFinder<APawn> Not actual Class
+	//auto Test = PlayerPawnBPClass.Class; // We get here TSubclassOf<APawn> actual Class Pointer
+
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;

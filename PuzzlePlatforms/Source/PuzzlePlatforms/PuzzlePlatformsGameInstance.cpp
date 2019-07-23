@@ -3,19 +3,86 @@
 #include "PuzzlePlatformsGameInstance.h"
 
 #include "Engine/Engine.h"
+//#include "PlatformTrigger.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Blueprint/UserWidget.h"
+#include "Edit_Tools/HandTools.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer & ObjectInitializer)
 {
-	UE_LOG(LogTemp, Warning, TEXT("GameInstance Constructor"));
+
+	LOG_S(FString("GameInstance Constructor"));
+
+	ConstructorHelpers::FClassFinder<UUserWidget> MainMenuBPClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
+	if (!ensure(MainMenuBPClass.Class != nullptr)) return;
+
+	//MainMenu = MainMenuBPClass.Class.DefaulObject();  // If MainMenu is class UUserWidget MainMenu = nullptr;
+
+	MainMenu = MainMenuBPClass.Class;
+
+	LOG_S(FString::Printf(TEXT("Found Class: %s"), *MainMenu->GetName()));
+
+	/*ConstructorHelpers::FClassFinder<APlatformTrigger> PlatformTriggerBPClass(TEXT("/Game/PuzzlePlatforms/BP_PlatformTrigger"));
+	if (!ensure(PlatformTriggerBPClass.Class != nullptr)) return;
+
+	LOG_S(FString::Printf(TEXT("Found Class: %s"), *PlatformTriggerBPClass.Class->GetName()));*/
 }
 
 void UPuzzlePlatformsGameInstance::Init()
 {
-	UE_LOG(LogTemp, Warning, TEXT("GameInstance Init"));
+	LOG_S(FString("GameInstance Init"));
+	auto World = GetWorld();
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (PlayerController == nullptr)
+	{
+		LOG_S(FString("PlayerController == NULL"));
+	}
+	else
+	{
+		LOG_S(FString("PlayerController is not NULL"));
+	}
 }
+
+void UPuzzlePlatformsGameInstance::LoadMenu()
+{
+	if (!ensure(MainMenu != nullptr)) return;
+	Menu = CreateWidget<UUserWidget>(this, MainMenu);
+
+	if (!ensure(Menu != nullptr)) return;
+	Menu->AddToViewport();
+	
+	SetFocusAndCursorMenuMode();
+}
+
+void UPuzzlePlatformsGameInstance::SetFocusAndCursorMenuMode()
+{
+	auto World = GetWorld();
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+
+	FInputModeUIOnly Mode;
+	Mode.SetWidgetToFocus(Menu->GetCachedWidget());
+	PlayerController->SetInputMode(Mode);
+	PlayerController->bShowMouseCursor = true;
+
+	/// Sam's Code
+	/*	FInputModeUIOnly InputModeData;
+	InputModeData.SetWidgetToFocus(Menu->TakeWidget());
+	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); // without it code works fine
+
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = true;*/
+
+}
+
 
 void UPuzzlePlatformsGameInstance::Host()
 {
+	SetFocuseAndCursorGameMode();
+
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
 
@@ -38,4 +105,16 @@ void UPuzzlePlatformsGameInstance::Join(const FString& Address)
 	if (!ensure(PlayerController != nullptr)) return;
 
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+}
+
+void UPuzzlePlatformsGameInstance::SetFocuseAndCursorGameMode()
+{
+	auto World = GetWorld();
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	Menu->RemoveFromViewport();
+	Menu = nullptr;
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+	//FSlateApplication::Get().SetFocusToGameViewport();
+	PlayerController->bShowMouseCursor = false;
 }
