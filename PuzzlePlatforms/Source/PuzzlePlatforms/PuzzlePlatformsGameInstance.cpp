@@ -8,6 +8,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "Edit_Tools/HandTools.h"
+#include "MenuSystem//MainMenu.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer & ObjectInitializer)
 {
@@ -48,12 +49,15 @@ void UPuzzlePlatformsGameInstance::Init()
 void UPuzzlePlatformsGameInstance::LoadMenu()
 {
 	if (!ensure(MainMenu != nullptr)) return;
-	Menu = CreateWidget<UUserWidget>(this, MainMenu);
+	Menu = CreateWidget<UMainMenu>(this, MainMenu);
 
 	if (!ensure(Menu != nullptr)) return;
-	Menu->AddToViewport();
+	//Menu->AddToViewport();
 	
-	SetFocusAndCursorMenuMode();
+	//SetFocusAndCursorMenuMode();
+
+	Menu->SetGameInstanceInterface(this);
+
 }
 
 void UPuzzlePlatformsGameInstance::SetFocusAndCursorMenuMode()
@@ -87,7 +91,7 @@ void UPuzzlePlatformsGameInstance::Host()
 	if (!ensure(Engine != nullptr)) return;
 
 	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
-
+	LOG_S(FString("Hosting"));
 	UWorld* World = GetWorld();
 	if (!ensure(World != nullptr)) return;
 
