@@ -52,40 +52,28 @@ void UPuzzlePlatformsGameInstance::LoadMenu()
 	Menu = CreateWidget<UMainMenu>(this, MainMenu);
 
 	if (!ensure(Menu != nullptr)) return;
+
+	/// we take out this code in MainMenu
 	//Menu->AddToViewport();
 	
 	//SetFocusAndCursorMenuMode();
+	///
+
+	Menu->SetUIMode();
 
 	Menu->SetGameInstanceInterface(this);
 
 }
 
-void UPuzzlePlatformsGameInstance::SetFocusAndCursorMenuMode()
-{
-	auto World = GetWorld();
-
-	APlayerController* PlayerController = World->GetFirstPlayerController();
-
-	FInputModeUIOnly Mode;
-	Mode.SetWidgetToFocus(Menu->GetCachedWidget());
-	PlayerController->SetInputMode(Mode);
-	PlayerController->bShowMouseCursor = true;
-
-	/// Sam's Code
-	/*	FInputModeUIOnly InputModeData;
-	InputModeData.SetWidgetToFocus(Menu->TakeWidget());
-	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); // without it code works fine
-
-	PlayerController->SetInputMode(InputModeData);
-
-	PlayerController->bShowMouseCursor = true;*/
-
-}
 
 
 void UPuzzlePlatformsGameInstance::Host()
 {
-	SetFocuseAndCursorGameMode();
+	/// we take out this code in MainMenu
+	//SetFocuseAndCursorGameMode();
+	///
+
+	//Menu->SetGameMode();
 
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
@@ -111,7 +99,30 @@ void UPuzzlePlatformsGameInstance::Join(const FString& Address)
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
 }
 
-void UPuzzlePlatformsGameInstance::SetFocuseAndCursorGameMode()
+
+/*void UPuzzlePlatformsGameInstance::SetFocusAndCursorMenuMode()
+{
+	auto World = GetWorld();
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+
+	FInputModeUIOnly Mode;
+	Mode.SetWidgetToFocus(Menu->GetCachedWidget());
+	PlayerController->SetInputMode(Mode);
+	PlayerController->bShowMouseCursor = true;
+
+	/// Sam's Code
+	/**	FInputModeUIOnly InputModeData;
+	InputModeData.SetWidgetToFocus(Menu->TakeWidget());
+	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); // without it code works fine
+
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = true;**
+
+}*/
+
+/*void UPuzzlePlatformsGameInstance::SetFocuseAndCursorGameMode()
 {
 	auto World = GetWorld();
 
@@ -121,4 +132,4 @@ void UPuzzlePlatformsGameInstance::SetFocuseAndCursorGameMode()
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
 	//FSlateApplication::Get().SetFocusToGameViewport();
 	PlayerController->bShowMouseCursor = false;
-}
+}*/

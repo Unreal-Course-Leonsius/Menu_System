@@ -34,8 +34,9 @@ public:
 
 private:
 
-	void SetFocusAndCursorMenuMode();
-	void SetFocuseAndCursorGameMode();
+	/// we take this code in to MainMenu
+	//void SetFocusAndCursorMenuMode();
+	//void SetFocuseAndCursorGameMode();
 
 private:
 

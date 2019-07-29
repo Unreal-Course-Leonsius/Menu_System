@@ -67,6 +67,32 @@ bool UMainMenu::Initialize()
 
 }
 
+
+/// We can also use this virtual function instead of SetGameMode()
+/// and the code take into here from SetGameMode()
+/// But I think in such way code became less readable
+/*void UMainMenu::OnLevelRemovedFromWorld(ULevel * Inlevel, UWorld * InWorld)
+{
+	Super::OnLevelRemovedFromWorld(Inlevel, InWorld);
+
+	LOG_S(FString("Virtual Function OnLevelRemoveFromWorld"));
+
+	auto World = GetWorld();
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	this->RemoveFromViewport();
+
+	/// This code is not work here in UUserWidget
+	//this = nullptr;
+	//UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+	//FSlateApplication::Get().SetFocusToGameViewport();
+	///
+
+	FInputModeGameOnly Mode;
+	PlayerController->SetInputMode(Mode);
+	PlayerController->bShowMouseCursor = false;
+}*/
+
 void UMainMenu::HostServer()
 {
 	LOG_S(FString("Click Event Conneted"));

@@ -21,6 +21,9 @@ protected:
 
 	virtual bool Initialize() override;
 
+	/// We can also use this virtual function instead of SetGameMode()
+	//virtual void OnLevelRemovedFromWorld(ULevel* Inlevel, UWorld* InWorld) override;
+
 	UFUNCTION()
 	void HostServer();
 
