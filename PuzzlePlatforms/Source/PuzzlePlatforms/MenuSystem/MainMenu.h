@@ -33,6 +33,9 @@ protected:
 	UFUNCTION()
 	void OpenMainMenu();
 
+	UFUNCTION()
+	void JoinToServer();
+
 
 public:  // Works only public section
 
@@ -54,7 +57,7 @@ public:
 	class UButton* CancleButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* JoinToServer;
+	class UButton* ConfirmJoinButton;
 
 
 	/// Blueprint Widgets
@@ -66,6 +69,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidget* JoinMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UEditableTextBox* IPAddressField;
 
 
 private:

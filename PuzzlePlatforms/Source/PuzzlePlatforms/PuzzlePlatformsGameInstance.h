@@ -30,7 +30,7 @@ public:
 	void Host();
 
 	UFUNCTION(BlueprintCallable) // UFUNCTION(Exec) to get command in Editor command with key ~
-	void Join(const FString& Address);
+	virtual void Join(const FString& Address) override;
 
 private:
 

@@ -5,6 +5,7 @@
 #include "Edit_Tools/HandTools.h"
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
+#include "Components/EditableTextBox.h"
 #include "PuzzlePlatformsGameInstance.h"
 
 void UMainMenu::SetGameInstanceInterface(IMenuInterface * GameInstanceInterface)
@@ -66,6 +67,9 @@ bool UMainMenu::Initialize()
 
 	if (!ensure(CancleButton != nullptr)) return false;
 	CancleButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
+
+	if (!ensure(ConfirmJoinButton != nullptr)) return false;
+	ConfirmJoinButton->OnClicked.AddDynamic(this, &UMainMenu::JoinToServer);
 	
 	/// Instead of it we use Interface
 	//PPGameInstance = Cast<UPuzzlePlatformsGameInstance>(GetWorld()->GetGameInstance());
@@ -129,5 +133,16 @@ void UMainMenu::OpenMainMenu()
 	if (!ensure(MainMenu != nullptr)) return;
 
 	MenuSwitcher->SetActiveWidget(MainMenu);
+}
+
+void UMainMenu::JoinToServer()
+{
+	if (GameInstanceInterface != nullptr)
+	{
+		if (!ensure(IPAddressField != nullptr)) return;
+		const FString& Address = IPAddressField->GetText().ToString();
+		GameInstanceInterface->Join(Address);
+	}
+
 }
 

@@ -73,7 +73,7 @@ void UPuzzlePlatformsGameInstance::Host()
 	//SetFocuseAndCursorGameMode();
 	///
 
-	//Menu->SetGameMode();
+	Menu->SetGameMode();
 
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
@@ -97,6 +97,8 @@ void UPuzzlePlatformsGameInstance::Join(const FString& Address)
 	if (!ensure(PlayerController != nullptr)) return;
 
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+
+	Menu->SetGameMode();
 }
 
 
