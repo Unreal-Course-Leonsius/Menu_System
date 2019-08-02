@@ -27,6 +27,12 @@ protected:
 	UFUNCTION()
 	void HostServer();
 
+	UFUNCTION()
+	void OpenJoinMenu();
+
+	UFUNCTION()
+	void OpenMainMenu();
+
 
 public:  // Works only public section
 
@@ -37,11 +43,30 @@ public:  // Works only public section
 
 public:
 
+	/// Blueprint Buttons
 	UPROPERTY(meta = (BindWidget))
-	class UButton* Host;
+	class UButton* HostButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* Join;
+	class UButton* JoinButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* CancleButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* JoinToServer;
+
+
+	/// Blueprint Widgets
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* MenuSwitcher;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* MainMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* JoinMenu;
+
 
 private:
 
