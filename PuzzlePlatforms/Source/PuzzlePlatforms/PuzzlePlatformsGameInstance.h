@@ -23,14 +23,21 @@ public:
 
 	virtual void Init();
 
+	/// For MainMenu Widget Functions
 	UFUNCTION(BlueprintCallable)
-	void LoadMenu();
+	void LoadMainMenu();
 
 	UFUNCTION(BlueprintCallable)
-	void Host();
+	void InGameLoadMenu();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void Host() override;
 
 	UFUNCTION(BlueprintCallable) // UFUNCTION(Exec) to get command in Editor command with key ~
 	virtual void Join(const FString& Address) override;
+
+	/// For InGameMenu
+	virtual void ReLoadMainMenu() override;
 
 private:
 
@@ -43,8 +50,13 @@ private:
 	TSubclassOf<class UUserWidget> MainMenu; // Such way MainMenu = PlatformTriggerBPClass.Class Because both of they is TSubclassOf<>(); 
 	//class UUserWidget* MainMenu = nullptr;  // Such way MainMenu = PlatformTriggerBPClass.Class.GetDefaultObject(); Because they are different type // But we need TSubclassOf<>() because CreateWidget() function requier it
 
-	class UMainMenu* Menu = nullptr;  //it's for to get value which CreateWidget() return
+	TSubclassOf<class UUserWidget> InGameMenu;
+
+	class UMainMenu* MenuLaunch = nullptr;  //it's for to get value which CreateWidget() return
+
+	class UInGameMenu* MenuGame = nullptr;
 
 	APlayerController* PlayerController = nullptr;
+
 
 };

@@ -9,6 +9,8 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
+#include "PuzzlePlatformsGameInstance.h"
+
 //////////////////////////////////////////////////////////////////////////
 // APuzzlePlatformsCharacter
 
@@ -45,6 +47,17 @@ APuzzlePlatformsCharacter::APuzzlePlatformsCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	/*ConstructorHelpers::FClassFinder<UUserWidget> InGameMenuBPClass(TEXT("/Game/MenuSystem/WBP_InGameMenu"));
+	if (!ensure(InGameMenuBPClass.Class != nullptr)) return;
+
+	InGameMenu = InGameMenuBPClass.Class;
+
+	auto GM = InGameMenu.GetDefaultObject();
+
+	//if (!ensure(InGameMenu != nullptr)) return;
+	GameMenu = CreateWidget<UInGameMenu>(this, InGameMenu);*/
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -106,6 +119,7 @@ void APuzzlePlatformsCharacter::LookUpAtRate(float Rate)
 
 void APuzzlePlatformsCharacter::MoveForward(float Value)
 {
+
 	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		// find out which way is forward

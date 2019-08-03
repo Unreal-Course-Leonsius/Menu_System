@@ -3,19 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
-#include "MenuInterface.h"
+//#include "Blueprint/UserWidget.h"
+#include "MenuWidget.h"
+//#include "MenuInterface.h"
 #include "MainMenu.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PUZZLEPLATFORMS_API UMainMenu : public UUserWidget
+class PUZZLEPLATFORMS_API UMainMenu : public UMenuWidget
 {
 	GENERATED_BODY()
 
-	/// Don't work in this Section
+		/// Don't work in this Section
 
 protected:
 
@@ -37,48 +38,49 @@ protected:
 	void JoinToServer();
 
 
-public:  // Works only public section
-
-	void SetGameInstanceInterface(IMenuInterface* GameInstaceInterface);
-
-	void SetUIMode();
-	void SetGameMode();
-
 public:
 
 	/// Blueprint Buttons
 	UPROPERTY(meta = (BindWidget))
-	class UButton* HostButton;
+		class UButton* HostButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* JoinButton;
+		class UButton* JoinButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* CancleButton;
+		class UButton* CancleButton;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* ConfirmJoinButton;
+		class UButton* ConfirmJoinButton;
 
 
 	/// Blueprint Widgets
 	UPROPERTY(meta = (BindWidget))
-	class UWidgetSwitcher* MenuSwitcher;
+		class UWidgetSwitcher* MenuSwitcher;
 
 	UPROPERTY(meta = (BindWidget))
-	class UWidget* MainMenu;
+		class UWidget* MainMenu;
 
 	UPROPERTY(meta = (BindWidget))
-	class UWidget* JoinMenu;
+		class UWidget* JoinMenu;
 
 	UPROPERTY(meta = (BindWidget))
-	class UEditableTextBox* IPAddressField;
+		class UEditableTextBox* IPAddressField;
 
 
-private:
+	/// We all take it out in MenuWidget class for better Architectur
+	/*private:
 
-	/// Instead of it we use Interface
-	//class UPuzzlePlatformsGameInstance* PPGameInstance = nullptr;
+		/// Instead of it we use Interface
+		//class UPuzzlePlatformsGameInstance* PPGameInstance = nullptr;
 
-	IMenuInterface* GameInstanceInterface = nullptr;
-	
+		IMenuInterface* GameInstanceInterface = nullptr;
+
+	public:  // Works only public section
+
+		void SetGameInstanceInterface(IMenuInterface* GameInstaceInterface);
+
+		void SetUIMode();
+		void SetGameMode();*/
+
 };

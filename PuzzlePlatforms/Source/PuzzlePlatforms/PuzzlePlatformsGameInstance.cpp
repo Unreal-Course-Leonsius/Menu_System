@@ -8,7 +8,8 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "Edit_Tools/HandTools.h"
-#include "MenuSystem//MainMenu.h"
+#include "MenuSystem/MainMenu.h"
+#include "MenuSystem/InGameMenu.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer & ObjectInitializer)
 {
@@ -22,7 +23,12 @@ UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitiali
 
 	MainMenu = MainMenuBPClass.Class;
 
+	ConstructorHelpers::FClassFinder<UUserWidget> InGameMenuBPClass(TEXT("/Game/MenuSystem/WBP_InGameMenu"));
+	if (!ensure(InGameMenuBPClass.Class != nullptr)) return;
+
 	LOG_S(FString::Printf(TEXT("Found Class: %s"), *MainMenu->GetName()));
+
+	InGameMenu = InGameMenuBPClass.Class;
 
 	/*ConstructorHelpers::FClassFinder<APlatformTrigger> PlatformTriggerBPClass(TEXT("/Game/PuzzlePlatforms/BP_PlatformTrigger"));
 	if (!ensure(PlatformTriggerBPClass.Class != nullptr)) return;
@@ -44,14 +50,16 @@ void UPuzzlePlatformsGameInstance::Init()
 	{
 		LOG_S(FString("PlayerController is not NULL"));
 	}
+
+
 }
 
-void UPuzzlePlatformsGameInstance::LoadMenu()
+void UPuzzlePlatformsGameInstance::LoadMainMenu()
 {
 	if (!ensure(MainMenu != nullptr)) return;
-	Menu = CreateWidget<UMainMenu>(this, MainMenu);
+	MenuLaunch = CreateWidget<UMainMenu>(this, MainMenu);
 
-	if (!ensure(Menu != nullptr)) return;
+	if (!ensure(MenuLaunch != nullptr)) return;
 
 	/// we take out this code in MainMenu
 	//Menu->AddToViewport();
@@ -59,10 +67,22 @@ void UPuzzlePlatformsGameInstance::LoadMenu()
 	//SetFocusAndCursorMenuMode();
 	///
 
-	Menu->SetUIMode();
+	MenuLaunch->SetUIScreen();
 
-	Menu->SetGameInstanceInterface(this);
+	MenuLaunch->SetGameInstanceInterface(this);
 
+	
+}
+
+void UPuzzlePlatformsGameInstance::InGameLoadMenu()
+{
+	if (!ensure(InGameMenu != nullptr)) return;
+	MenuGame = CreateWidget<UInGameMenu>(this, InGameMenu);
+
+	if (!ensure(MenuGame != nullptr)) return;
+	MenuGame->SetUIScreen();
+
+	MenuGame->SetGameInstanceInterface(this);
 }
 
 
@@ -73,7 +93,7 @@ void UPuzzlePlatformsGameInstance::Host()
 	//SetFocuseAndCursorGameMode();
 	///
 
-	Menu->SetGameMode();
+	MenuLaunch->SetGameMode();
 
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine != nullptr)) return;
@@ -84,6 +104,7 @@ void UPuzzlePlatformsGameInstance::Host()
 	if (!ensure(World != nullptr)) return;
 
 	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
+
 }
 
 void UPuzzlePlatformsGameInstance::Join(const FString& Address)
@@ -98,7 +119,15 @@ void UPuzzlePlatformsGameInstance::Join(const FString& Address)
 
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
 
-	Menu->SetGameMode();
+	MenuLaunch->SetGameMode();
+}
+
+void UPuzzlePlatformsGameInstance::ReLoadMainMenu()
+{
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+
+	PlayerController->ClientTravel("/Game/MenuSystem/MainMneu", ETravelType::TRAVEL_Absolute);
 }
 
 
