@@ -37,6 +37,8 @@ void UMenuWidget::SetGameMode()
 	auto World = GetWorld();
 
 	APlayerController* PlayerController = World->GetFirstPlayerController();
+
+
 	this->RemoveFromViewport();
 
 	/// This code is not work here in UUserWidget

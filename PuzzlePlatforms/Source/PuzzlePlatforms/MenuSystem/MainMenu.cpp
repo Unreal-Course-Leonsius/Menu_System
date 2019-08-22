@@ -14,17 +14,24 @@ bool UMainMenu::Initialize()
 	bool Success = Super::Initialize();
 	if (!Success) return false;
 
+
+	/// MainMenu
 	if (!ensure(HostButton != nullptr)) return false;
 	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
 
 	if (!ensure(JoinButton != nullptr)) return false;
 	JoinButton->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
 
+	if (!ensure(QuitButton != nullptr)) return false;
+	QuitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitGame);
+
+	/// JoinMenu
 	if (!ensure(CancleButton != nullptr)) return false;
 	CancleButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
 
 	if (!ensure(ConfirmJoinButton != nullptr)) return false;
 	ConfirmJoinButton->OnClicked.AddDynamic(this, &UMainMenu::JoinToServer);
+
 	
 	LOG_S(FString("MainMenu Initilize"));
 
@@ -81,6 +88,19 @@ void UMainMenu::OpenJoinMenu()
 	MenuSwitcher->SetActiveWidget(JoinMenu);
 
 	
+
+}
+
+void UMainMenu::QuitGame()
+{
+	auto World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+	
+	PlayerController->ConsoleCommand("quit");
+
 
 }
 

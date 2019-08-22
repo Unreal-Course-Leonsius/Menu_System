@@ -25,12 +25,17 @@ protected:
 	/// We can also use this virtual function instead of SetGameMode()
 	//virtual void OnLevelRemovedFromWorld(ULevel* Inlevel, UWorld* InWorld) override;
 
+	// MainMenu
 	UFUNCTION()
 	void HostServer();
 
 	UFUNCTION()
 	void OpenJoinMenu();
 
+	UFUNCTION()
+	void QuitGame();
+
+	// JoinMenu
 	UFUNCTION()
 	void OpenMainMenu();
 
@@ -41,12 +46,17 @@ protected:
 public:
 
 	/// Blueprint Buttons
+	// MainMenu
 	UPROPERTY(meta = (BindWidget))
 		class UButton* HostButton;
 
 	UPROPERTY(meta = (BindWidget))
 		class UButton* JoinButton;
 
+	UPROPERTY(meta = (BindWidget))
+		class UButton* QuitButton;
+
+	// JoinMenu
 	UPROPERTY(meta = (BindWidget))
 		class UButton* CancleButton;
 

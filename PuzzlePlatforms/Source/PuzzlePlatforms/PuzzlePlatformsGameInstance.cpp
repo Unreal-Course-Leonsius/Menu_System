@@ -70,7 +70,6 @@ void UPuzzlePlatformsGameInstance::LoadMainMenu()
 	MenuLaunch->SetUIScreen();
 
 	MenuLaunch->SetGameInstanceInterface(this);
-
 	
 }
 
